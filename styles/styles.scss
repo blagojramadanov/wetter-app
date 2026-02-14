@@ -1,0 +1,35 @@
+@import "variables";
+@import "mixins";
+@import "detailView";
+@import "loading";
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lobster&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  @include largeScreens {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: "Inter", sans-serif;
+    background-color: lighten($background, 10);
+  }
+}
+
+#app {
+  background-color: $background;
+  color: $text-color;
+  padding: 1rem;
+
+  @include largeScreens {
+    width: 400px;
+    height: $max-height-dekstop;
+    overflow: auto;
+    border-radius: $border-radius;
+    box-shadow: 1px 1px 5px black;
+  }
+}
