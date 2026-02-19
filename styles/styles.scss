@@ -2,34 +2,37 @@
 @import "mixins";
 @import "detailView";
 @import "loading";
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lobster&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
+  font-family: "Inter", sans-serif;
+  background-color: lighten($background, 10);
+
   @include largeScreens {
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    font-family: "Inter", sans-serif;
-    background-color: lighten($background, 10);
   }
 }
 
 #app {
-  background-color: $background;
+  width: 100%;
+  height: 100dvh;
   color: $text-color;
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
 
   @include largeScreens {
     width: 400px;
     height: $max-height-dekstop;
-    overflow: auto;
     border-radius: $border-radius;
-    box-shadow: 1px 1px 5px black;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
   }
 }

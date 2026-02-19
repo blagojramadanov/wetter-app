@@ -1,10 +1,10 @@
-import { rootElement } from "../main";
+const rootElement = document.getElementById("app");
 
-export function showLoading(message = "Lädt...") {
+export function showLoading(message = "Lade...") {
   rootElement.innerHTML = `
-        <div class="loading">
-            <div class="loading__spinner"></div>
-            <p class="loading__text">${message}</p>
-        </div>
-    `;
+    <div class="loader-wrapper">
+      <div class="spinner-circle"></div>
+      <p class="loading-text">${message}</p>
+    </div>
+  `;
 }
