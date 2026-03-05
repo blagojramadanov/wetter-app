@@ -1,4 +1,4 @@
-import { loadDetailView } from "./src/detailView";
 import "./styles/styles.scss";
+import { MenuView } from "./src/menuView.js";
 
-loadDetailView("Stojakovo");
+MenuView.render();
