@@ -1,6 +1,7 @@
 import { Storage } from "./storage.js";
 import { loadDetailView } from "./detailView.js";
 import { getForecastWeather } from "./api.js";
+import { debounce } from "./utils.js";
 
 function getBackgroundImage(conditionText, isDay = 1) {
   const text = conditionText.toLowerCase();
@@ -52,7 +53,6 @@ export const MenuView = {
 
       <ul id="saved-cities-list" class="saved-cities"></ul>
     `;
-
     MenuView.renderSavedCities();
     MenuView.bindEvents();
   },
@@ -60,7 +60,6 @@ export const MenuView = {
   renderSavedCities: async () => {
     const list = document.getElementById("saved-cities-list");
     list.innerHTML = "";
-
     const cities = Storage.getCities();
 
     for (const city of cities) {
@@ -68,11 +67,9 @@ export const MenuView = {
         const { location, current, forecast } = await getForecastWeather(city);
         const today = forecast.forecastday[0];
         const bg = getBackgroundImage(current.condition.text, current.is_day);
-
         const li = document.createElement("li");
         li.className = "saved-city";
         li.style.backgroundImage = `url('${bg}')`;
-
         li.innerHTML = `
           <div class="overlay"></div>
           <div class="city-info">
@@ -85,18 +82,14 @@ export const MenuView = {
           </div>
           <button class="delete-btn">✖</button>
         `;
-
         li.querySelector(".delete-btn").style.display = "none";
-
-        li.querySelector(".city-info").addEventListener("click", () => {
-          loadDetailView(city);
-        });
-
+        li.querySelector(".city-info").addEventListener("click", () =>
+          loadDetailView(city),
+        );
         li.querySelector(".delete-btn").addEventListener("click", () => {
           Storage.removeCity(city);
           MenuView.renderSavedCities();
         });
-
         list.appendChild(li);
       } catch (err) {
         console.error("Error loading city", city, err);
@@ -107,24 +100,24 @@ export const MenuView = {
     editBtn.addEventListener("click", () => {
       const deleteBtns = document.querySelectorAll(".saved-city .delete-btn");
       const isActive = editBtn.classList.toggle("active");
-      deleteBtns.forEach((btn) => {
-        btn.style.display = isActive ? "block" : "none";
-      });
+      deleteBtns.forEach(
+        (btn) => (btn.style.display = isActive ? "block" : "none"),
+      );
     });
   },
 
   bindEvents: () => {
-    document
-      .getElementById("search-btn")
-      .addEventListener("click", async () => {
-        const input = document.getElementById("city-input");
-        const city = input.value.trim();
-        if (city) {
-          Storage.saveCity(city);
-          await MenuView.renderSavedCities();
-          loadDetailView(city);
-          input.value = "";
-        }
-      });
+    const input = document.getElementById("city-input");
+    const searchBtn = document.getElementById("search-btn");
+
+    const handleSearch = () => {
+      const city = input.value.trim();
+      if (city) {
+        loadDetailView(city);
+        input.value = "";
+      }
+    };
+
+    searchBtn.addEventListener("click", handleSearch);
   },
 };

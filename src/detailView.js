@@ -80,50 +80,58 @@ export async function loadDetailView(cityName) {
     const bgImage = getBackgroundImage(current.condition.text, current.is_day);
 
     root.innerHTML = `
-<div class="weather-app" style="background-image: url('${bgImage}')">
-  <div class="weather-app__overlay">
-    <div class="weather-app__header">
-      <button id="back-btn">⬅</button>
-      <div class="header-center">
-        <h2>${location.name}</h2>
-        <h1>${formatTemp(current.temp_c)}</h1>
-        <p>${current.condition.text}</p>
-        <p>H:${formatTemp(today.day.maxtemp_c)} T:${formatTemp(today.day.mintemp_c)}</p>
+      <div class="weather-app" style="background-image: url('${bgImage}')">
+        <div class="weather-app__overlay">
+          <div class="weather-app__header">
+            <button id="back-btn">⬅</button>
+            <div class="header-center">
+              <h2>${location.name}</h2>
+              <h1>${formatTemp(current.temp_c)}</h1>
+              <p>${current.condition.text}</p>
+              <p>H:${formatTemp(today.day.maxtemp_c)} T:${formatTemp(today.day.mintemp_c)}</p>
+            </div>
+            <button id="favorite-btn">⭐</button>
+          </div>
+
+          <div class="weather-app__hourly">${hourlyHtml}</div>
+          <div class="weather-app__forecast">
+            <h3>Vorhersage für die nächsten 3 Tage:</h3>
+            ${daysHtml}
+          </div>
+
+          <div class="weather-app__grid">
+            ${[
+              ["Feuchtigkeit", `${current.humidity}%`],
+              ["Gefühlt", formatTemp(current.feelslike_c)],
+              ["Sonnenaufgang", today.astro.sunrise],
+              ["Sonnenuntergang", today.astro.sunset],
+              ["Niederschlag", `${current.precip_mm} mm`],
+              ["UV-Index", current.uv],
+            ]
+              .map(
+                ([label, value]) =>
+                  `<div class="info-card"><p>${label}</p><h3>${value}</h3></div>`,
+              )
+              .join("")}
+          </div>
+        </div>
       </div>
-      <button id="favorite-btn">⭐</button>
-    </div>
-
-    <div class="weather-app__hourly">${hourlyHtml}</div>
-    <div class="weather-app__forecast">
-      <h3>Vorhersage für die nächsten 3 Tage:</h3>
-      ${daysHtml}
-    </div>
-
-    <div class="weather-app__grid">
-      ${[
-        ["Feuchtigkeit", `${current.humidity}%`],
-        ["Gefühlt", formatTemp(current.feelslike_c)],
-        ["Sonnenaufgang", today.astro.sunrise],
-        ["Sonnenuntergang", today.astro.sunset],
-        ["Niederschlag", `${current.precip_mm} mm`],
-        ["UV-Index", current.uv],
-      ]
-        .map(
-          ([label, value]) =>
-            `<div class="info-card"><p>${label}</p><h3>${value}</h3></div>`,
-        )
-        .join("")}
-    </div>
-  </div>
-</div>
-`;
+    `;
 
     document
       .getElementById("back-btn")
       .addEventListener("click", () => MenuView.render());
-    document.getElementById("favorite-btn").addEventListener("click", () => {
-      Storage.saveCity(location.name);
-      alert(`${location.name} als Favorit gespeichert!`);
+
+    const favBtn = document.getElementById("favorite-btn");
+    favBtn.addEventListener("click", () => {
+      if (!Storage.getCities().includes(location.name)) {
+        Storage.saveCity(location.name);
+        if (document.getElementById("saved-cities-list"))
+          MenuView.renderSavedCities();
+        alert(`${location.name} als Favorit gespeichert!`);
+      } else {
+        alert(`${location.name} ist schon gespeichert!`);
+      }
     });
   } catch (error) {
     root.innerHTML = "<p>Fehler (falsch gegeben)</p>";
