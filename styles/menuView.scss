@@ -1,81 +1,142 @@
 #app {
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("images/menu-background.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(160deg, #7f8f9e, #38a8ad);
 
   @include largeScreens {
-    width: 400px;
-    border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    width: 700px;
+    margin: auto;
+    border-radius: 14px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
   }
 }
 
-.menu-header {
+.menu-background {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.weather-icons {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.icon {
+  position: absolute;
+  font-size: 42px;
+  opacity: 0.25;
+  animation: floatWeather 22s linear infinite;
+}
+
+.icon:nth-child(1) {
+  left: 8%;
+  animation-duration: 18s;
+}
+
+.icon:nth-child(2) {
+  left: 25%;
+  animation-duration: 24s;
+}
+
+.icon:nth-child(3) {
+  left: 50%;
+  animation-duration: 20s;
+}
+
+.icon:nth-child(4) {
+  left: 70%;
+  animation-duration: 26s;
+}
+
+.icon:nth-child(5) {
+  left: 90%;
+  animation-duration: 22s;
+}
+
+@keyframes floatWeather {
+  0% {
+    transform: translateY(110vh) rotate(0deg);
+  }
+
+  100% {
+    transform: translateY(-200px) rotate(360deg);
+  }
+}
+
+.menu-container {
   position: relative;
-  text-align: center;
-  margin: 20px 0;
+  z-index: 2;
+  padding-top: 30px;
+}
+
+.menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px;
 
   h1 {
-    padding-right: 230px;
+    padding-left: 20px;
     font-size: 2.2rem;
     font-weight: 700;
-    color: #4795ce;
+    color: white;
   }
 
   #edit-btn {
-    position: absolute;
-    top: 5%;
-    right: 20px;
-    padding: 6px 12px;
+    padding: 7px 20px;
+    margin-right: 10px;
     font-size: 0.9rem;
     font-weight: 600;
     border: none;
-    border-radius: 6px;
-    background: #4795ce;
+    border-radius: 8px;
+    background: #1e88e5;
     color: #fff;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.2s;
 
     &:hover {
-      background: #005fa3;
+      background: #1565c0;
+      transform: scale(1.05);
     }
 
     &.active {
-      background: #ff0000;
+      background: #e53935;
     }
   }
 }
 
 .search-container {
-  margin-top: 1rem;
   display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  gap: 10px;
+  margin-bottom: 25px;
 
   input {
-    padding: 10px;
-    width: 250px;
-    font-size: 1rem;
-    border-radius: 6px;
-    border: 1px solid #ccc;
+    padding: 12px;
+    width: 220px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    font-size: 0.95rem;
   }
 
   button {
-    padding: 10px 16px;
-    margin-left: 10px;
-    cursor: pointer;
-    background: #4795ce;
-    color: white;
+    padding: 12px 16px;
+    border-radius: 10px;
     border: none;
-    border-radius: 6px;
+    background: #0e7ad8;
+    color: white;
     font-weight: 600;
-    transition: background 0.2s;
+    cursor: pointer;
+    transition: all 0.2s;
 
     &:hover {
-      background: #005fa3;
+      background: #1565c0;
+      transform: scale(1.05);
     }
   }
 }
@@ -83,87 +144,92 @@
 .saved-cities {
   list-style: none;
   padding: 0;
-  max-width: 450px;
-  margin: 0 auto;
+  max-width: 360px;
+  margin: auto;
   display: flex;
   flex-direction: column;
   gap: 1rem;
+}
 
-  .saved-city {
+.saved-city {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  height: 100px;
+  color: white;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  transition: transform 0.2s;
+  backdrop-filter: blur(10px);
+
+  &:hover {
+    transform: scale(1.04);
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 0;
+  }
+
+  .city-info {
     position: relative;
-    border-radius: 14px;
-    overflow: hidden;
-    cursor: pointer;
-    height: 100px;
-    width: 350px;
-    color: #fff;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    padding: 0.7rem;
+    font-weight: 600;
+    z-index: 1;
 
-    &:hover {
-      transform: scale(1.03);
+    .city-name {
+      font-size: 1.1rem;
+      margin-bottom: 2px;
     }
 
-    .overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.45);
-      z-index: 0;
+    .country {
+      font-size: 0.9rem;
+      opacity: 0.8;
+      margin-bottom: 6px;
     }
 
-    .city-info {
-      position: relative;
+    .bottom-row {
       display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      padding: 0.5rem 0.5rem;
-      font-weight: 600;
-
-      .city-name {
-        font-size: 1rem;
-        margin-bottom: 0.2rem;
-      }
-
-      .country {
-        font-size: 1rem;
-        margin-bottom: 0.2rem;
-      }
+      justify-content: space-between;
+      align-items: center;
 
       .condition {
-        font-size: 1rem;
-        margin-bottom: 0.2rem;
+        font-size: 0.85rem;
+        opacity: 0.9;
       }
 
       .temp {
-        margin-left: 310px;
-        font-size: 1rem;
+        font-size: 1.4rem;
+        font-weight: 700;
       }
     }
+  }
 
-    .delete-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: rgba(255, 255, 255, 0.35);
-      border: none;
-      border-radius: 8px;
-      color: #ff5555;
-      font-size: 1.3rem;
-      padding: 6px 12px;
-      cursor: pointer;
-      transition:
-        background 0.2s,
-        color 0.2s;
+  .delete-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(255, 255, 255, 0.35);
+    border: none;
+    border-radius: 8px;
+    color: #ff5252;
+    font-size: 1rem;
+    padding: 5px 9px;
+    cursor: pointer;
+    transition: all 0.2s;
+    z-index: 2;
 
-      &:hover {
-        color: #ff0000;
-        background: rgba(255, 255, 255, 0.55);
-      }
+    &:hover {
+      color: #ff0000;
+      background: rgba(255, 255, 255, 0.55);
     }
   }
 }

@@ -41,18 +41,32 @@ export const MenuView = {
   render: () => {
     const root = document.getElementById("app");
     root.innerHTML = `
-      <div class="menu-header">
-        <h1>Wetter</h1>
-        <button id="edit-btn">Bearbeiten</button>
-      </div>
+   <div class="menu-background">
+     <div class="weather-icons">
+    <div class="icon sun">☀</div>
+    <div class="icon cloud">☁</div>
+    <div class="icon rain">🌧</div>
+    <div class="icon cloud">☁</div>
+    <div class="icon sun">☀</div>
+    </div>
+  </div>
 
-      <div class="search-container">
-        <input type="text" id="city-input" placeholder="Nach Stadt suchen..." />
-        <button id="search-btn">Suchen</button>
-      </div>
+<div class="menu-container">
 
-      <ul id="saved-cities-list" class="saved-cities"></ul>
-    `;
+  <div class="menu-header">
+    <h1>Wetter</h1>
+    <button id="edit-btn">Bearbeiten</button>
+  </div>
+
+  <div class="search-container">
+    <input type="text" id="city-input" placeholder="Nach Stadt suchen..." />
+    <button id="search-btn">Suchen</button>
+  </div>
+
+  <ul id="saved-cities-list" class="saved-cities"></ul>
+
+</div>
+`;
     MenuView.renderSavedCities();
     MenuView.bindEvents();
   },
