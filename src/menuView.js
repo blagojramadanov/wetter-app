@@ -55,7 +55,7 @@ export const MenuView = {
 
   <div class="menu-header">
     <h1>Wetter</h1>
-    <button id="edit-btn">Bearbeiten</button>
+    <button id="edit-btn">Abrechnen</button>
   </div>
 
   <div class="search-container">
@@ -124,14 +124,18 @@ export const MenuView = {
     const input = document.getElementById("city-input");
     const searchBtn = document.getElementById("search-btn");
 
-    const handleSearch = () => {
+    const handleSearch = async () => {
       const city = input.value.trim();
       if (city) {
+        const { location } = await getForecastWeather(city);
+        if (location.name.toLowerCase() !== city.toLowerCase()) {
+          alert(`Stadt "${city}" nicht gefunden. Verscuh Nocmal`);
+          return;
+        }
         loadDetailView(city);
         input.value = "";
       }
     };
-
     searchBtn.addEventListener("click", handleSearch);
   },
 };

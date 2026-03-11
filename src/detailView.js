@@ -129,14 +129,22 @@ export async function loadDetailView(cityName) {
       .addEventListener("click", () => MenuView.render());
 
     const favBtn = document.getElementById("favorite-btn");
+
+    if (Storage.getCities().includes(location.name)) {
+      favBtn.classList.add("active");
+    }
+
     favBtn.addEventListener("click", () => {
       if (!Storage.getCities().includes(location.name)) {
         Storage.saveCity(location.name);
+        favBtn.classList.add("active");
         if (document.getElementById("saved-cities-list"))
           MenuView.renderSavedCities();
         alert(`${location.name} als Favorit gespeichert!`);
       } else {
-        alert(`${location.name} ist schon gespeichert!`);
+        Storage.removeCity(location.name);
+        favBtn.classList.remove("active");
+        alert(`${location.name} wurde aus Favoriten entfernt!`);
       }
     });
   } catch (error) {

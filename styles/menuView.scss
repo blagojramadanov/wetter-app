@@ -1,15 +1,10 @@
 #app {
   position: relative;
-  min-height: 100vh;
   overflow: hidden;
   background: linear-gradient(160deg, #7f8f9e, #38a8ad);
-
-  @include largeScreens {
-    width: 700px;
-    margin: auto;
-    border-radius: 14px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-  }
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .menu-background {
